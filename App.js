@@ -1,11 +1,14 @@
 // import at the very top of everything.
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import { AuthProvider } from "./hooks/useAuth";
-import  {LogBox, Text, View, TouchableOpacity, Image}  from "react-native";
+// import { AuthProvider } from "./hooks/useAuth";
+import { LogBox, Text, View, TouchableOpacity, Image } from "react-native";
 import tw from 'tailwind-rn';
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(['Setting a timer', 'Unsupported Tailwind', 'AsyncStorage has been']);
+LogBox.ignoreAllLogs()
 
 import StackNavigator from "./StackNavigator";
 import BottomNavi from "./screens/BottomNavi";
@@ -20,13 +23,15 @@ import BottomNavi from "./screens/BottomNavi";
 export default function App() {
 
   return (
-    
+
     <NavigationContainer>
       {/* aka HOC - Higher Order Component */}
-      <AuthProvider>
+      {/* <AuthProvider>     */}
+      <Provider store={store}>
         {/* where we WRAP some CHILD Component, and we pass down the AUTH info to the children */}
-        <StackNavigator/>
-      </AuthProvider>
+        <StackNavigator />
+        {/* </AuthProvider>     */}
+      </Provider>
     </NavigationContainer>
 
     // <View style={tw("flex-1 justify-center items-center")}>

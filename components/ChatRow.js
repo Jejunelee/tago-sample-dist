@@ -1,15 +1,16 @@
 import { useNavigation } from "@react-navigation/core";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import getMatchedUserInfo from "../lib/getMatchedUserInfo";
 import tw from "tailwind-rn";
 import { db } from "../firebase";
 import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
+import { connect } from 'react-redux'
 
-const ChatRow = ({ matchDetails }) => {
+const ChatRow = ({ matchDetails, user }) => {
   const navigation = useNavigation();
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   // console.log("matchDetails:", matchDetails);
 
@@ -20,7 +21,7 @@ const ChatRow = ({ matchDetails }) => {
   // console.log("matchDetails.user, user.uid", matchDetails.users, user.uid);
 
   useEffect(() => {
-    setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user.uid));
+    setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user?.uid));
   }, [matchDetails, user]);
 
   // console.log("matcheduserinfo:", matchedUserInfo);
@@ -67,8 +68,13 @@ const ChatRow = ({ matchDetails }) => {
     </TouchableOpacity>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer
+  }
+}
 
-export default ChatRow;
+export default connect(mapStateToProps)(ChatRow);
 
 const styles = StyleSheet.create({
   cardShadow: {

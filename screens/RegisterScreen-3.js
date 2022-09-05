@@ -11,8 +11,17 @@ import * as ImageSinglePicker from 'expo-image-picker'
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid'
-const UploadScreen = ({ navigation, route }) => {
+const RegisterScreen3 = ({ navigation, route }) => {
     const [loading, setLoading] = useState(false)
+    const {
+        name,
+        email,
+        password,
+        gender,
+        dob,
+        like,
+        SchoolorWorkText
+    } = route.params
     const [image, setImage] = useState([])
     const launchCamera = async () => {
         const result = await ImageSinglePicker.launchCameraAsync({
@@ -48,7 +57,7 @@ const UploadScreen = ({ navigation, route }) => {
             setLoading(false)
         }
     };
-    const UploadScreen = async (uri) => {
+    const uploadImageAsync = async (uri) => {
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.onload = function () {
@@ -70,8 +79,15 @@ const UploadScreen = ({ navigation, route }) => {
     }
     const onNextButtonPress = () => {
         console.log(image)
-        navigation.navigate('MyProfile', {
+        navigation.navigate('RegisterScreen4', {
+            name: name,
+            email: email,
+            password: password,
+            gender: gender,
+            dob: dob,
+            like: like,
             image: image,
+            SchoolorWorkText: SchoolorWorkText
         })
     }
     return (
@@ -170,4 +186,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default UploadScreen;
+export default RegisterScreen3;

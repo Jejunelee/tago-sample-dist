@@ -23,11 +23,11 @@ import Header from "../components/Header";
 import ReceiverMessage from "../components/ReceiverMessage";
 import SenderMessage from "../components/SenderMessage";
 import { db } from "../firebase";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import getMatchedUserInfo from "../lib/getMatchedUserInfo";
 
 const MessageScreen = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const { params } = useRoute();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -62,9 +62,9 @@ const MessageScreen = () => {
     addDoc(collection(db, "matches", matchDetails.id, "messages"), {
       //represent the msgs here
       timestamp: serverTimestamp(),
-      userId: user.uid,
+      userId: user?.uid,
       displayName: user.displayName,
-      photoURL: matchDetails.users[user.uid].photoURL, //TODO the person's DP that they UPLOADED during profile details making
+      photoURL: matchDetails.users[user?.uid].photoURL, //TODO the person's DP that they UPLOADED during profile details making
       message: input,
     });
 
@@ -75,7 +75,7 @@ const MessageScreen = () => {
   return (
     <View style={tw("flex-1 mt-6")}>
       <Header
-        title={getMatchedUserInfo(matchDetails?.users, user.uid).displayName}
+        title={getMatchedUserInfo(matchDetails?.users, user?.uid).displayName}
         callEnabled
       />
 
@@ -93,7 +93,7 @@ const MessageScreen = () => {
             style={tw("pl-4")}
             keyExtractor={(item) => item.id}
             renderItem={({ item: message }) =>
-              message.userId === user.uid ? (
+              message.userId === user?.uid ? (
                 <SenderMessage key={message.id} message={message} />
               ) : (
                 <ReceiverMessage key={message.id} message={message} />

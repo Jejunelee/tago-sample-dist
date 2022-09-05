@@ -3,33 +3,35 @@ import { View, Text, FlatList } from "react-native";
 import tw from "tailwind-rn";
 import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { db } from "../firebase";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import ChatRow from "./ChatRow";
+import { connect } from 'react-redux'
 
-const ChatList = () => {
+const ChatList = ({ user }) => {
+  // const { user } = props
   //fetch all the matches
 
   const [matches, setMatches] = useState([]);
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   //TODO implicit return again, so no unsub required alag se
   useEffect(
     () =>
       //real time listener
       //check all the matches `where` you are part of it
-      onSnapshot(
-        query(
-          collection(db, "matches"),
-          where("usersMatched", "array-contains", user.uid)
-        ),
-        (snapshot) =>
-          setMatches(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-          )
-      ),
+      // onSnapshot(
+      //   query(
+      //     collection(db, "matches"),
+      //     where("usersMatched", "array-contains", user?.uid)
+      //   ),
+      //   (snapshot) =>
+      //     setMatches(
+      //       snapshot.docs.map((doc) => ({
+      //         id: doc.id,
+      //         ...doc.data(),
+      //       }))
+      //     )
+      // ),
     [user]
   );
 
@@ -48,5 +50,9 @@ const ChatList = () => {
     </View>
   );
 };
-
-export default ChatList;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer
+  }
+}
+export default connect(mapStateToProps)(ChatList);
